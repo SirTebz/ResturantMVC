@@ -6,6 +6,7 @@ namespace ShisaResturant.Models
     {
         Task<IEnumerable<T>> GetAllSync();
         Task<T> GetByIdSync(int id, QueryOptions<T> options);
+        Task<IEnumerable<T>> GetAllByIdSync<TKey>(TKey id, string propertyName, QueryOptions<T> options);
         Task AddSync(T entity);
         Task UpdateAsync(T entity);
         Task DeleteAsync(int id);

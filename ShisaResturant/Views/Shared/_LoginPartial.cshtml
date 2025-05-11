@@ -4,9 +4,29 @@
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
-{
+{     
+
     <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            @{
+                int cartCount = 0;
+                if (Context.Session.Get<OrderViewModel>("OrderViewModel") != null)
+                {
+                    OrderViewModel model = Context.Session.Get<OrderViewModel>("OrderViewModel");
+                    cartCount = model.OrderItems.Sum(product => product.Quantity);
+                }
+            }
+
+        <a  class="nav-link position-relative" asp-action="Cart" asp-controller="Order">
+            <i class="bi bi-cart2">
+                <span class="position-absolute start-100 translate-middle badge rounded-pill bg-success">
+                    @cartCount
+                    <span class="visually-hidden">Cart Quantity</span>
+                </span>
+            </i>
+        </a>
+    </li>
+    <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
     </li>
     <li class="nav-item">
         <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
